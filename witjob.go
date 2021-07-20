@@ -20,6 +20,7 @@ func init() {
 
 func main() {
 
+	configureEnvironments()
 	database.ConnectWITJobBoard()
 
 	port := os.Getenv("PORT")
