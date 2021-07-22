@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"runtime"
+	"witpgh-jobapi-go/app/route"
 	"witpgh-jobapi-go/app/shared/database"
 
 	"github.com/joho/godotenv"
@@ -29,7 +30,7 @@ func main() {
 		port = "3000"
 	}
 
-	http.ListenAndServe(":"+port, nil)
+	http.ListenAndServe(":"+port, route.LoadRoutes())
 
 }
 
