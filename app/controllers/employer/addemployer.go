@@ -34,5 +34,4 @@ func CreateEmployerAccount(w http.ResponseWriter, r *http.Request) {
 		//email temporary password
 		response.SendJSON(w, newEmployer)
 	}
-
 }

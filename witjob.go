@@ -21,7 +21,10 @@ func init() {
 
 func main() {
 
-	configureEnvironments()
+	if os.Getenv("ENV") != "PROD" {
+		configureEnvironments()
+	}
+
 	database.ConnectWITJobBoard()
 
 	port := os.Getenv("PORT")

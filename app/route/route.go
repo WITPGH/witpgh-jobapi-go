@@ -22,7 +22,6 @@ func routes() *httprouter.Router {
 
 	//employer
 	r.POST("/employers/account/create", hr.Handler(alice.New(cors.Handler).ThenFunc(employer.CreateEmployerAccount)))
-
 	return r
 }
 
