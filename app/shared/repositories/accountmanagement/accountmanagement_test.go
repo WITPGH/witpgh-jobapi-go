@@ -3,6 +3,7 @@ package accountmanagement_test
 import (
 	"witpgh-jobapi-go/app/shared/database"
 	"witpgh-jobapi-go/app/shared/repositories"
+	"witpgh-jobapi-go/app/shared/services/system/generation"
 
 	"log"
 	"os"
@@ -24,11 +25,20 @@ func TestAddEmployer(t *testing.T) {
 
 		assert := assert.New(t)
 
+		var genService = generation.NewGenerationService()
+		var employerKey = genService.GeneratePublicId()
+		var publicId = genService.GeneratePublicId()
+		var email = genService.GeneratePublicId() + "@" + genService.GeneratePublicId() + ".com"
+
 		var myRepository = repositories.NewRepositoryRegistry().GetEmployerAccountRepository()
-		p, err := myRepository.AddNewEmployer("abcd", "xyz", "test@test.com", "pasword123", "Test", "Client")
+		p, err := myRepository.AddNewEmployer(publicId, employerKey, email, "pasword123", "Test", "Client")
 
 		assert.Nil(err)
 		assert.True(p.Id > 0, "Employer Id must be greater than 1")
-		assert.True(p.PublicId == "abcd")
+		assert.Equal(employerKey, p.EmployerKey, "Employer Keys should be equal")
+		assert.Equal(publicId, p.PublicId, "Public Ids should be equal")
+		assert.Equal(email, p.Email, "Email Addresses should be equal")
+
+		myRepository.DeleteEmployerById(p.Id)
 	}
 }

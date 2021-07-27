@@ -119,3 +119,30 @@ func (repository *AccountRepository) GetAllEmployers() ([]Employer, error) {
 
 	return items, err
 }
+
+func (repository *AccountRepository) DeleteEmployerById(employerId int) (bool, error) {
+	stmt, err := repository.db.Prepare("delete from employers where id = $1")
+
+	if err != nil {
+		log.Println(err)
+		return false, err
+	}
+	result, scanError := stmt.Exec(employerId)
+
+	if scanError != nil {
+		log.Println(scanError)
+		return false, scanError
+	}
+
+	count, rowsAffectedErr := result.RowsAffected()
+
+	if rowsAffectedErr != nil {
+		return false, rowsAffectedErr
+	}
+
+	if count > 0 {
+		return true, nil
+	} else {
+		return false, rowsAffectedErr
+	}
+}
